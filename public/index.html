@@ -9,9 +9,7 @@
   </head>
   <body>
     <div class="page login" id='page-login'>
-      <div class='logo'></div>
-      <input id='username'></input>
-      <button id='login'>Login</button>
+      <p>Loading...</p>
     </div>
     <div class="page lobby" id='page-lobby'>
       <h1>Real Chess</h1>
@@ -32,11 +30,12 @@
       </div>
     </div>
 
-    <script src="lib/socket.io-1.2.0.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/socket.io-client@3/dist/socket.io.js"></script>
     <script src="lib/jquery-1.11.1.js"></script>
     <script src="lib/WinJS.4.0/js/WinJS.min.js"></script>
     <script src="lib/chess.min.js"></script> 
     <script src="lib/chessboard-0.3.0.min.js"></script> 
+    <script src="lib/dyte-plugin-sdk.umd.js"></script>
     <script src="/default.js"></script>
   </body>
 </html>

@@ -4,112 +4,66 @@ app.use(express.static('public'));
 app.use(express.static('dashboard'));
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-var port = process.env.PORT || 3000;
+var port = process.env.PORT || 5000;
 
-var lobbyUsers = {};
-var users = {};
 var activeGames = {};
 
-app.get('/', function(req, res) {
- res.sendFile(__dirname + '/public/default.html');
+app.get('/main', function(req, res) {
+ res.sendFile(__dirname + '/public/index.html');
 
 });
 
-app.get('/dashboard/', function(req, res) {
- res.sendFile(__dirname + '/dashboard/dashboard.html');
-});
 
 io.on('connection', function(socket) {
     console.log('new connection ' + socket);
     
-    socket.on('login', function(userId) {
-       doLogin(socket, userId);
+    socket.on('login', function({roomId, userId}) {
+        socket.join(`room/${roomId}`);
+       doLogin(socket, userId, roomId);
     });
 
-    function doLogin(socket, userId) {
-        socket.userId = userId;  
-     
-        if (!users[userId]) {    
-            console.log('creating new user');
-            users[userId] = {userId: socket.userId, games:{}};
+    function doLogin(socket, userId, roomId) {
+        console.log({userId, roomId});
+        socket.userId = userId;
+        socket.roomId = roomId;
+        console.log("activeGames: "+ JSON.stringify(activeGames));  
+        if(activeGames[roomId]) {
+            socket.emit('login', {game: activeGames[roomId]});
         } else {
-            console.log('user found!');
-            Object.keys(users[userId].games).forEach(function(gameId) {
-                console.log('gameid - ' + gameId);
-            });
+            socket.emit('login', { game: null });
         }
-        
-        socket.emit('login', {users: Object.keys(lobbyUsers), 
-                              games: Object.keys(users[userId].games)});
-        lobbyUsers[userId] = socket;
-        
-        socket.broadcast.emit('joinlobby', socket.userId);
     }
     
-    socket.on('invite', function(opponentId) {
-        console.log('got an invite from: ' + socket.userId + ' --> ' + opponentId);
+    socket.on('invite', function(opponent) {
+        console.log(opponent);
         
-        socket.broadcast.emit('leavelobby', socket.userId);
-        socket.broadcast.emit('leavelobby', opponentId);
+        // socket.broadcast.emit('leavelobby', socket.userId);
+        // socket.broadcast.emit('leavelobby', opponentId);
       
        
         var game = {
-            id: Math.floor((Math.random() * 100) + 1),
+            id: socket.roomId,
             board: null, 
-            users: {white: socket.userId, black: opponentId}
+            users: {white: socket.userId, black: opponent.id}
         };
         
         socket.gameId = game.id;
         activeGames[game.id] = game;
-        
-        users[game.users.white].games[game.id] = game.id;
-        users[game.users.black].games[game.id] = game.id;
   
-        console.log('starting game: ' + game.id);
-        lobbyUsers[game.users.white].emit('joingame', {game: game, color: 'white'});
-        lobbyUsers[game.users.black].emit('joingame', {game: game, color: 'black'});
-        
-        delete lobbyUsers[game.users.white];
-        delete lobbyUsers[game.users.black];   
-        
-        socket.broadcast.emit('gameadd', {gameId: game.id, gameState:game});
+        console.log(game);
+        io.to(`room/${socket.roomId}`).emit('gameStart', { game });
     });
     
-     socket.on('resumegame', function(gameId) {
-        console.log('ready to resume game: ' + gameId);
-         
-        socket.gameId = gameId;
-        var game = activeGames[gameId];
-        
-        users[game.users.white].games[game.id] = game.id;
-        users[game.users.black].games[game.id] = game.id;
-  
-        console.log('resuming game: ' + game.id);
-        if (lobbyUsers[game.users.white]) {
-            lobbyUsers[game.users.white].emit('joingame', {game: game, color: 'white'});
-            delete lobbyUsers[game.users.white];
-        }
-        
-        if (lobbyUsers[game.users.black]) {
-            lobbyUsers[game.users.black] && 
-            lobbyUsers[game.users.black].emit('joingame', {game: game, color: 'black'});
-            delete lobbyUsers[game.users.black];  
-        }
-    });
     
     socket.on('move', function(msg) {
-        socket.broadcast.emit('move', msg);
+        io.to(`room/${socket.roomId}`).emit('move', msg);
         activeGames[msg.gameId].board = msg.board;
         console.log(msg);
     });
     
     socket.on('resign', function(msg) {
         console.log("resign: " + msg);
-
-        delete users[activeGames[msg.gameId].users.white].games[msg.gameId];
-        delete users[activeGames[msg.gameId].users.black].games[msg.gameId];
         delete activeGames[msg.gameId];
-
         socket.broadcast.emit('resign', msg);
     });
     
@@ -122,9 +76,7 @@ io.on('connection', function(socket) {
         console.log(socket.userId + ' disconnected');
         console.log(socket.gameId + ' disconnected');
       }
-      
-      delete lobbyUsers[socket.userId];
-      
+            
       socket.broadcast.emit('logout', {
         userId: socket.userId,
         gameId: socket.gameId

@@ -4,33 +4,44 @@
     WinJS.UI.processAll().then(function () {
       
       var socket, serverGame;
-      var username, playerColor;
+      var user, playerColor;
       var game, board;
+      var spectator = false;
       var usersOnline = [];
       var myGames = [];
       socket = io();
+      
+      console.log("Hi there");
+      const plugin = new dytePluginSdk.DytePlugin();
+      plugin.init().then(() => {
+        console.log("Plugin done");
+        plugin.getCurrentPeer().then(peer => {
+          console.log(peer);
+          user = peer;
+          socket.emit("login", {userId: peer.id, roomId: plugin.getRoomName()})
+        }).catch(err => console.log(err));
+      })
            
       //////////////////////////////
       // Socket.io handlers
       ////////////////////////////// 
       
       socket.on('login', function(msg) {
-            usersOnline = msg.users;
-            updateUserList();
+        console.log(msg);
+        if(msg.game) {
+          startGame(msg.game);
+        } else {
+          $('#userLabel').text(user.displayName);
+          //socket.emit('login', peer.id);
             
-            myGames = msg.games;
-            updateGamesList();
-      });
-      
-      socket.on('joinlobby', function (msg) {
-        addUser(msg);
-      });
-      
-       socket.on('leavelobby', function (msg) {
-        removeUser(msg);
-      });
-      
-      socket.on('gameadd', function(msg) {
+          $('#page-login').hide();
+          $('#page-lobby').show(); 
+          usersOnline = plugin.getJoinedPeers().filter(p => p.id !== user.id);
+        console.log(usersOnline);
+        updateUserList(); 
+        }
+
+        
       });
       
       socket.on('resign', function(msg) {
@@ -43,15 +54,12 @@
             }            
       });
                   
-      socket.on('joingame', function(msg) {
-        console.log("joined as game id: " + msg.game.id );   
-        playerColor = msg.color;
-        initGame(msg.game);
-        
-        $('#page-lobby').hide();
-        $('#page-game').show();
-        
+      socket.on('gameStart', function(msg) {
+        console.log("Starting game");
+        startGame(msg.game);
       });
+
+
         
       socket.on('move', function (msg) {
         if (serverGame && msg.gameId === serverGame.id) {
@@ -96,6 +104,17 @@
         $('#page-game').hide();
         $('#page-lobby').show();
       });
+
+      function startGame(game) {
+        console.log("joined as game id: " + game.id );   
+        playerColor = game.users.black == user.id ? "black" : "white";
+        spectator = !(game.users.black == user.id || game.users.white == user.id)
+        initGame(game);
+        
+        $('#page-lobby').hide();
+        $('#page-login').hide();
+        $('#page-game').show();
+      }
       
       var addUser = function(userId) {
         usersOnline.push(userId);
@@ -118,6 +137,7 @@
           $('#gamesList').append($('<button>')
                         .text('#'+ game)
                         .on('click', function() {
+                          plugin.enableForAll();
                           socket.emit('resumegame',  game);
                         }));
         });
@@ -127,8 +147,9 @@
         document.getElementById('userList').innerHTML = '';
         usersOnline.forEach(function(user) {
           $('#userList').append($('<button>')
-                        .text(user)
+                        .text(user.displayName)
                         .on('click', function() {
+                          plugin.enableForAll();
                           socket.emit('invite',  user);
                         }));
         });
@@ -159,6 +180,7 @@
       // only pick up pieces for the side to move
       var onDragStart = function(source, piece, position, orientation) {
         if (game.game_over() === true ||
+            spectator ||
             (game.turn() === 'w' && piece.search(/^b/) !== -1) ||
             (game.turn() === 'b' && piece.search(/^w/) !== -1) ||
             (game.turn() !== playerColor[0])) {
