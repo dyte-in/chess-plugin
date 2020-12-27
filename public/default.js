@@ -47,7 +47,7 @@
       socket.on('resign', function(msg) {
             if (msg.gameId == serverGame.id) {
 
-              socket.emit('login', username);
+              socket.emit("login", {userId: peer.id, roomId: plugin.getRoomName()})
 
               $('#page-lobby').show();
               $('#page-game').hide();
@@ -108,18 +108,32 @@
       function startGame(game) {
         console.log("joined as game id: " + game.id );   
         playerColor = game.users.black == user.id ? "black" : "white";
-        spectator = !(game.users.black == user.id || game.users.white == user.id)
+        spectator = !(game.users.black == user.id || game.users.white == user.id);
+
+        whitePlayer = plugin.getJoinedPeers().find(p => p.id === game.users.white);
+        blackPlayer = plugin.getJoinedPeers().find(p => p.id === game.users.black);
+
+        if(playerColor === "black") {
+          $('#opponent-name').text(whitePlayer.displayName);
+          $('#player-name').text(blackPlayer.displayName);
+        } else {
+          $("#player-name").text(whitePlayer.displayName);
+          $('#opponent-name').text(blackPlayer.displayName);
+        }
+
+        if(spectator) {
+          $('#game-message').text("Now Spectating");
+          $("#game-resign").hide();
+        } else {
+          $("#game-resign").show();
+        }
+
         initGame(game);
         
         $('#page-lobby').hide();
         $('#page-login').hide();
         $('#page-game').show();
       }
-      
-      var addUser = function(userId) {
-        usersOnline.push(userId);
-        updateUserList();
-      };
     
      var removeUser = function(userId) {
           for (var i=0; i<usersOnline.length; i++) {

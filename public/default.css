@@ -80,3 +80,8 @@ body {
 .circle.offline {
 	background-color: yellow;
 }
+
+#opponent-name, #player-name {
+	padding: 1rem;
+	text-align: center;
+}

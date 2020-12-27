@@ -1,2 +1,2 @@
-# Real Chess
+# Dyte Chess
 Real-time chess game 

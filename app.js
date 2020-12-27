@@ -64,20 +64,21 @@ io.on('connection', function(socket) {
     socket.on('resign', function(msg) {
         console.log("resign: " + msg);
         delete activeGames[msg.gameId];
-        socket.broadcast.emit('resign', msg);
+        io.to(`room/${socket.roomId}`).emit('resign', msg);
     });
     
 
     socket.on('disconnect', function(msg) {
         
-      console.log(msg);
       
       if (socket && socket.userId && socket.gameId) {
         console.log(socket.userId + ' disconnected');
         console.log(socket.gameId + ' disconnected');
       }
+
+      delete activeGames[socket.gameId];
             
-      socket.broadcast.emit('logout', {
+      io.to(`room/${socket.roomId}`).emit('logout', {
         userId: socket.userId,
         gameId: socket.gameId
       });
