@@ -111,7 +111,7 @@ body {
 }
 
 .user-label {
-	background-color: grey;
+	background-color: lightgray;
 	width: 15%;
 	display: flex;
 	flex-direction: column;
