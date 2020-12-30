@@ -57,22 +57,30 @@ body {
 }
 
 .page.game {
-	width: 100%;
+	margin-top: 4rem;
+	width: 100%
 }
 	
 .page.game button {
 	margin-bottom: 10px;	
 }
 
+#game-container {
+	display: flex;
+	justify-content: center;
+	align-items: flex-end;
+}
+
 #game-resign-container {
+	margin-top: 2rem;
 	width: 100%;
 	display: flex;
 	justify-content: center;
 }
 
 #game-board {
-	margin: auto;
 	width: 350px;
+	align-self: center;
 }
 
 #page-lobby{
@@ -82,6 +90,15 @@ body {
 #page-game {
 	display: none;
 }
+
+.flex-start { align-self: flex-start; }
+.flex-end { align-self: flex-end; }
+.center { align-self: center; }
+.mr-2 { margin-right: 2rem; }
+.ml-2 { margin-left: 2rem; }
+.w-50 { width: 200px; }
+.text-right { text-align: right; }
+.text-left { text-align: left; }
 
 .game-bottom {
 	position: absolute;
@@ -110,10 +127,4 @@ body {
 
 .circle.offline {
 	background-color: yellow;
-}
-
-#opponent-name, #player-name {
-	padding: 1rem;
-	text-align: center;
-	margin: auto;
 }

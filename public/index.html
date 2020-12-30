@@ -1,42 +1,51 @@
 <!doctype html>
 <html>
-  <head>
-    <meta name="viewport" content="width=410; user-scalable=no; minimal-ui">
-    <title>Dyte Chess</title>
-    <link rel="stylesheet" href="lib/chessboard-0.3.0.min.css">
-    <link rel="stylesheet" href="lib/WinJS.4.0/css/ui-light.css" />
-    <link rel="stylesheet" href="/default.css" />
-  </head>
-  <body>
-    <div class="page login" id='page-login'>
-      <p>Loading...</p>
-    </div>
-    <div class="page lobby" id='page-lobby'>
-      <h1>Dyte Chess</h1>
-      <h2 id='userLabel'></h2>
-      <h3>Please select who to play with</h3>
-       <div id='userList'>
-         No users online
-      </div>
-    </div>
-    <div class="page game" id='page-game'>
-      <h4 id="opponent-name">Opponent</h4>
-      <div id='game-board'></div>
-      <h4 id="player-name">You</h4>
-      <h2 id="game-message"></h2>
-      <div id="game-resign-container"><button id='game-resign'>Resign</button></div>
-      <div class="game-bottom">
-        <div id="spectator"></div>
-        <div id="game-turn"></div>
-      </div>
-    </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/socket.io-client@3/dist/socket.io.js"></script>
-    <script src="lib/jquery-1.11.1.js"></script>
-    <script src="lib/WinJS.4.0/js/WinJS.min.js"></script>
-    <script src="lib/chess.min.js"></script> 
-    <script src="lib/chessboard-0.3.0.min.js"></script> 
-    <script src="lib/dyte-plugin-sdk.umd.js"></script>
-    <script src="/default.js"></script>
-  </body>
+<head>
+  <meta name="viewport" content="width=410; user-scalable=no; minimal-ui">
+  <title>Dyte Chess</title>
+  <link rel="stylesheet" href="lib/chessboard-0.3.0.min.css">
+  <link rel="stylesheet" href="lib/WinJS.4.0/css/ui-light.css" />
+  <link rel="stylesheet" href="/default.css" />
+</head>
+
+<body>
+  <div class="page login" id="page-login">
+    <p>Loading...</p>
+  </div>
+  <div class="page lobby" id="page-lobby">
+    <h1>Dyte Chess</h1>
+    <h2 id="userLabel"></h2>
+    <h3>Who do you want to play with?</h3>
+    <div id="userList">
+      No users online
+    </div>
+  </div>
+  <div class="page game" id="page-game">
+    <div id="game-container">
+      <div class="flex-start text-right w-50 mr-2">
+        <h4 id="opponent-name">Opponent</h4>
+      </div>
+      <div id="game-board"></div>
+      <div class="flex-end text-left w-50 ml-2">
+        <h4 id="player-name">You</h4>
+      </div>
+    </div>
+    <h2 id="game-message"></h2>
+    <div id="game-resign-container"><button id="game-resign">Resign</button></div>
+    <div class="game-bottom">
+      <div id="spectator"></div>
+      <div id="game-turn"></div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/socket.io-client@3/dist/socket.io.js"></script>
+  <script src="lib/jquery-1.11.1.js"></script>
+  <script src="lib/WinJS.4.0/js/WinJS.min.js"></script>
+  <script src="lib/chess.min.js"></script>
+  <script src="lib/chessboard-0.3.0.min.js"></script>
+  <script src="lib/dyte-plugin-sdk.umd.js"></script>
+  <script src="/default.js"></script>
+</body>
+
 </html>
