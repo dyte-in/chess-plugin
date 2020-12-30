@@ -64,6 +64,12 @@ body {
 	margin-bottom: 10px;	
 }
 
+#game-resign-container {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+}
+
 #game-board {
 	margin: auto;
 	width: 350px;
@@ -90,7 +96,7 @@ body {
 
 #game-turn {
 	margin: auto;
-	color: lightgray;
+	color: rgb(75, 75, 75);
 }
 
 .circle {

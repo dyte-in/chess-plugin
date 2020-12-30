@@ -119,10 +119,10 @@
         whitesTurn ? boardWhite : boardBlack,
       );
 
-      $('#game-turn').css(
-        'color',
-        whitesTurn ? 'darkgray' : 'lightgray',
-      )
+      // $('#game-turn').css(
+      //   'color',
+      //   whitesTurn ? 'darkgray' : 'lightgray',
+      // )
     }
 
     function startGame(game) {
