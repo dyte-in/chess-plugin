@@ -29,10 +29,11 @@
 
     socket.on('login', function (msg) {
       console.log(msg);
+      $('#peer-identity').text(user.displayName);
+
       if (msg.game) {
         startGame(msg.game);
       } else {
-        $('#userLabel').text(user.displayName);
         //socket.emit('login', peer.id);
 
         $('#page-login').hide();
@@ -119,10 +120,10 @@
         whitesTurn ? boardWhite : boardBlack,
       );
 
-      // $('#game-turn').css(
-      //   'color',
-      //   whitesTurn ? 'darkgray' : 'lightgray',
-      // )
+      $('#game-turn').css(
+        'color',
+        whitesTurn ? 'black' : 'white',
+      )
     }
 
     function startGame(game) {
@@ -136,13 +137,15 @@
       if (playerColor === "black") {
         $('#opponent-name').text(whitePlayer.displayName);
         $('#player-name').text(blackPlayer.displayName);
+        $('#peer-role').text('You\'re playing as black')
       } else {
         $("#player-name").text(whitePlayer.displayName);
         $('#opponent-name').text(blackPlayer.displayName);
+        $('#peer-role').text('You\'re playing as white')
       }
 
       if (spectator) {
-        $('#game-message').text("Now Spectating");
+        $('#peer-role').text('You are a spectator');
         $("#game-resign").hide();
       } else {
         $("#game-resign").show();

@@ -108,12 +108,30 @@ body {
 	background-color: #f0d9b5; /*#b58863*/
 	display: flex;
 	justify-content: center;
-	font-size: 2.5rem;
+}
+
+.user-label {
+	background-color: grey;
+	width: 15%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	text-align: center;
+}
+
+#peer-identity {
+	font-size: 1.5rem;
+	margin-bottom: 1rem;
+}
+
+#peer-role {
+	font-size: 1.2rem;
 }
 
 #game-turn {
 	margin: auto;
-	color: rgb(75, 75, 75);
+	font-weight: bold;
+	font-size: 2.5rem;
 }
 
 .circle {
