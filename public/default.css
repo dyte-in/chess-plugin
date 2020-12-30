@@ -16,48 +16,57 @@ body {
 	flex-direction: column;
 }
 	
-	.page.login .logo {
-		display: block;
-		background-color: lightgray;
-		background-image: url('/img/chesslogo.jpg');
-		background-size: cover;
-		background-position: center center;
+.page.login .logo {
+	display: block;
+	background-color: lightgray;
+	background-image: url('/img/chesslogo.jpg');
+	background-size: cover;
+	background-position: center center;
 
-		margin-bottom: 50px;	
-		
-		width: 350px;
-		height: 350px;
-	}
+	margin-bottom: 50px;	
 	
-	.page.login button {
-		margin-left: 15px;
-		margin-bottom: 20px;
-		height: 35px;
-	}
+	width: 350px;
+	height: 350px;
+}
+
+.page.login button {
+	margin-left: 15px;
+	margin-bottom: 20px;
+	height: 35px;
+}
+
+.page.login input {
+	margin-bottom: 20px;
+	width: 202px;
+	height: 25px;
+	font-size: 12pt;
+	padding: 2px;
 	
-	.page.login input {
-		margin-bottom: 20px;
-		width: 202px;
-		height: 25px;
-		font-size: 12pt;
-		padding: 2px;
-		
-		-webkit-border-radius: 5px;
-		-moz-border-radius: 5px;
-		border-radius: 5px; 
-	}
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px; 
+}
 
-	.page.lobby h2 {
-		color: darkgrey;
-	}
+.page.lobby h2 {
+	color: darkgrey;
+}
 
-	.page.lobby h3 {
-		margin-bottom: 10px;
-		margin-top: 40px;
-	}
+.page.lobby h3 {
+	margin-bottom: 10px;
+	margin-top: 40px;
+}
+
+.page.game {
+	width: 100%;
+}
 	
 .page.game button {
 	margin-bottom: 10px;	
+}
+
+#game-board {
+	margin: auto;
+	width: 350px;
 }
 
 #page-lobby{
@@ -66,6 +75,22 @@ body {
 
 #page-game {
 	display: none;
+}
+
+.game-bottom {
+	position: absolute;
+	width: 100%;
+	height: 25vh;
+	bottom: 0;
+	background-color: #f0d9b5; /*#b58863*/
+	display: flex;
+	justify-content: center;
+	font-size: 2.5rem;
+}
+
+#game-turn {
+	margin: auto;
+	color: lightgray;
 }
 
 .circle {
@@ -84,4 +109,5 @@ body {
 #opponent-name, #player-name {
 	padding: 1rem;
 	text-align: center;
+	margin: auto;
 }

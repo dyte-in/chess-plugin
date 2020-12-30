@@ -21,11 +21,13 @@
     </div>
     <div class="page game" id='page-game'>
       <h4 id="opponent-name">Opponent</h4>
-      <div id='game-board' style="width: 400px">
-      </div>
+      <div id='game-board'></div>
       <h4 id="player-name">You</h4>
       <h2 id="game-message"></h2>
       <button id='game-resign'>Resign</button>
+      <div class="game-bottom">
+        <div id="game-turn"></div>
+      </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/socket.io-client@3/dist/socket.io.js"></script>
