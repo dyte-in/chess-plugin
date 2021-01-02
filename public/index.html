@@ -24,26 +24,29 @@
   <div class="page game" id="page-game">
     <div id="game-container">
       <div class="flex-start text-right w-50 mr-2">
+        <div class="letterpic" id="opponent-avatar" title="Jon Snow"></div>
         <h4 id="opponent-name">Opponent</h4>
       </div>
       <div id="game-board"></div>
       <div class="flex-end text-left w-50 ml-2">
+        <div class="letterpic" id="player-avatar" title="Jon Snow"></div>
         <h4 id="player-name">You</h4>
       </div>
     </div>
     <h2 id="game-message"></h2>
-    <div id="game-resign-container"><button id="game-resign">Resign</button></div>
     <div class="game-bottom">
       <div class="user-label">
         <div id="peer-identity"></div>
         <div id="peer-role"></div>
       </div>
       <div id="game-turn"></div>
+      <div id="game-resign-container"><button id="game-resign">Reset</button></div>
     </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/socket.io-client@3/dist/socket.io.js"></script>
   <script src="lib/jquery-1.11.1.js"></script>
+  <script src="lib/jquery.letterpic.min.js"></script>
   <script src="lib/WinJS.4.0/js/WinJS.min.js"></script>
   <script src="lib/chess.min.js"></script>
   <script src="lib/chessboard-0.3.0.min.js"></script>

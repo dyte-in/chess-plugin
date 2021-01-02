@@ -58,13 +58,12 @@ io.on('connection', function(socket) {
     socket.on('move', function(msg) {
         io.to(`room/${socket.roomId}`).emit('move', msg);
         activeGames[msg.gameId].board = msg.board;
-        console.log(msg);
+        //console.log(msg);
     });
     
-    socket.on('resign', function(msg) {
-        console.log("resign: " + msg);
-        delete activeGames[msg.gameId];
-        io.to(`room/${socket.roomId}`).emit('resign', msg);
+    socket.on('reset', function(msg) {
+        activeGames[msg.gameId].board = null;
+        io.to(`room/${socket.roomId}`).emit('gameStart', { game: activeGames[msg.gameId] });
     });
     
 

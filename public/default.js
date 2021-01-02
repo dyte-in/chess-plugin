@@ -33,6 +33,7 @@
 
       if (msg.game) {
         startGame(msg.game);
+        setTurnIndicator();
       } else {
         //socket.emit('login', peer.id);
 
@@ -44,13 +45,11 @@
       }
     });
 
-    socket.on('resign', function (msg) {
+    socket.on('reset', function (msg) {
       if (msg.gameId == serverGame.id) {
 
-        socket.emit("login", { userId: peer.id, roomId: plugin.getRoomName() })
-
-        $('#page-lobby').show();
-        $('#page-game').hide();
+        startGame(msg.game);
+        setTurnIndicator();
       }
     });
 
@@ -63,7 +62,9 @@
 
     socket.on('move', function (msg) {
       if (serverGame && msg.gameId === serverGame.id) {
-        game.move(msg.move);
+        if(msg.move) {
+          game.move(msg.move);
+        }
         board.position(game.fen());
         setTurnIndicator();
       }
@@ -100,30 +101,47 @@
     });
 
     $('#game-resign').on('click', function () {
-      socket.emit('resign', { userId: username, gameId: serverGame.id });
-
-      socket.emit('login', username);
-      $('#page-game').hide();
-      $('#page-lobby').show();
+      socket.emit('reset', { gameId: serverGame.id});
     });
 
     var setTurnIndicator = function() {
       const whitesTurn = game.turn() === 'w';
-      const turnText = (displayName) => `${displayName}'s Turn`;
 
-      $('#game-turn').text(
-        turnText(whitesTurn ? whitePlayer.displayName : blackPlayer.displayName),
-      );
+      if(game.in_checkmate()) {
+        $('.game-bottom').css(
+          'background-color',
+          whitesTurn ?  boardBlack: boardWhite,
+        );
+  
+        $('#game-turn').css(
+          'color',
+          whitesTurn ? 'white' : 'black',
+        );
 
-      $('.game-bottom').css(
-        'background-color',
-        whitesTurn ? boardWhite : boardBlack,
-      );
+        const winnerText = (player) => player.id === user.id ? `You Won` : `${player.displayName} Won`;
+        
 
-      $('#game-turn').css(
-        'color',
-        whitesTurn ? 'black' : 'white',
-      )
+        $('#game-turn').text(
+          winnerText(whitesTurn ? blackPlayer : whitePlayer),
+        );
+      } else {
+        const turnText = (player) => player.id === user.id ? `Your Turn` : `${player.displayName}'s Turn`;
+
+        $('#game-turn').text(
+          turnText(whitesTurn ? whitePlayer : blackPlayer),
+        );
+  
+        $('.game-bottom').css(
+          'background-color',
+          whitesTurn ? boardWhite : boardBlack,
+        );
+  
+        $('#game-turn').css(
+          'color',
+          whitesTurn ? 'black' : 'white',
+        );
+      }
+
     }
 
     function startGame(game) {
@@ -136,13 +154,21 @@
 
       if (playerColor === "black") {
         $('#opponent-name').text(whitePlayer.displayName);
+        $('#opponent-avatar').attr('title', whitePlayer.displayName);
         $('#player-name').text(blackPlayer.displayName);
+        $('#player-avatar').attr('title', blackPlayer.displayName);
         $('#peer-role').text('You\'re playing as black')
       } else {
         $("#player-name").text(whitePlayer.displayName);
+        $('#player-avatar').attr('title', whitePlayer.displayName);
         $('#opponent-name').text(blackPlayer.displayName);
+        $('#opponent-avatar').attr('title', blackPlayer.displayName);
         $('#peer-role').text('You\'re playing as white')
       }
+
+      $(".letterpic").letterpic({
+        fill: "color"
+      });
 
       if (spectator) {
         $('#peer-role').text('You are a spectator');
@@ -183,7 +209,7 @@
     var updateUserList = function () {
       document.getElementById('userList').innerHTML = '';
       usersOnline.forEach(function (user) {
-        $('#userList').append($('<button>')
+        $('#userList').append($('<button class="user-invite-btn">')
           .text(user.displayName)
           .on('click', function () {
             plugin.enableForAll();
@@ -211,6 +237,7 @@
 
       game = serverGame.board ? new Chess(serverGame.board) : new Chess();
       board = new ChessBoard('game-board', cfg);
+      $(window).resize(board.resize);
     }
 
     // do not pick up pieces if the game is over
