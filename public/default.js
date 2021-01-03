@@ -62,7 +62,7 @@
 
     socket.on('move', function (msg) {
       if (serverGame && msg.gameId === serverGame.id) {
-        if(msg.move) {
+        if (msg.move) {
           game.move(msg.move);
         }
         board.position(game.fen());
@@ -81,7 +81,7 @@
     //////////////////////////////
     // Menus
     //////////////////////////////
-  
+
     $('#login').on('click', function () {
       username = $('#username').val();
 
@@ -102,25 +102,25 @@
     });
 
     $('#game-resign').on('click', function () {
-      socket.emit('reset', { gameId: serverGame.id});
+      socket.emit('reset', { gameId: serverGame.id });
     });
 
-    var setTurnIndicator = function() {
+    var setTurnIndicator = function () {
       const whitesTurn = game.turn() === 'w';
 
-      if(game.in_checkmate()) {
+      if (game.in_checkmate()) {
         $('.game-bottom').css(
           'background-color',
-          whitesTurn ?  boardBlack: boardWhite,
+          whitesTurn ? boardBlack : boardWhite,
         );
-  
+
         $('#game-turn').css(
           'color',
           whitesTurn ? 'white' : 'black',
         );
 
         const winnerText = (player) => player.id === user.id ? `You Won` : `${player.displayName} Won`;
-        
+
 
         $('#game-turn').text(
           winnerText(whitesTurn ? blackPlayer : whitePlayer),
@@ -131,12 +131,12 @@
         $('#game-turn').text(
           turnText(whitesTurn ? whitePlayer : blackPlayer),
         );
-  
+
         $('.game-bottom').css(
           'background-color',
           whitesTurn ? boardWhite : boardBlack,
         );
-  
+
         $('#game-turn').css(
           'color',
           whitesTurn ? 'black' : 'white',
@@ -227,8 +227,8 @@
       //     historyElement.append('<span>' + moves[i] + ' ' + ( moves[i + 1] ? moves[i + 1] : ' ') + '</span><br>')
       // }
       // historyElement.scrollTop(historyElement[0].scrollHeight);
-  
-  };
+
+    };
 
     //////////////////////////////
     // Chess Game
@@ -286,39 +286,39 @@
       }
     };
 
-    var onMouseoverSquare = function(square, piece) {
+    var onMouseoverSquare = function (square, piece) {
       var moves = game.moves({
-          square: square,
-          verbose: true
+        square: square,
+        verbose: true
       });
-  
+
       if (moves.length === 0) return;
-  
+
       greySquare(square);
-  
+
       for (var i = 0; i < moves.length; i++) {
-          greySquare(moves[i].to);
+        greySquare(moves[i].to);
       }
-  };
-  
-  var onMouseoutSquare = function(square, piece) {
+    };
+
+    var onMouseoutSquare = function (square, piece) {
       removeGreySquares();
-  };
-  
-  var removeGreySquares = function() {
+    };
+
+    var removeGreySquares = function () {
       board.resize();
-  };
-  
-  var greySquare = function(square) {
+    };
+
+    var greySquare = function (square) {
       var squareEl = $('#game-board .square-' + square);
-  
+
       var background = '#a9a9a9';
       if (squareEl.hasClass('black-3c85d') === true) {
-          background = '#696969';
+        background = '#696969';
       }
-  
+
       squareEl.css('background', background);
-  };
+    };
 
     // update the board position after the piece snap 
     // for castling, en passant, pawn promotion
