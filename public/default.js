@@ -72,7 +72,7 @@
       updateStatus();
     });
 
-    socket.on('draw-offered', function(msg) {
+    socket.on('draw-offered', function (msg) {
       if (msg.by === playerColor) return;
       $('#draw-offered').css('display', 'block');
       $('#draw-offered-text').text(`${toTitleCase(msg.by)} offered a draw!`);
@@ -81,10 +81,14 @@
     socket.on('draw-response', function (msg) {
       if (msg.accepted) {
         $('#current-status').text('Draw offer accepted, game drawn.');
-        $('#button-container').hide();
+        $('#button-container').css('visibility', 'hidden');
       } else {
         const currentText = $('#current-status').text();
-        $('#current-status').text(currentText + ', draw offered rejected.');
+        const appendText = ', draw offer rejected.';
+        if (!currentText.endsWith(appendText)) {
+          $('#current-status').text(currentText + appendText);
+        }
+        $('#game-draw').text('Offer Draw');
       }
     });
 
@@ -122,16 +126,18 @@
       socket.emit('reset', { gameId: serverGame.id });
     });
 
-    $('#game-draw').on('click', function() {
+    $('#game-draw').on('click', function () {
+      if ($('#game-draw').text() === 'Offered') return;
       socket.emit('draw-offered', { gameId: serverGame.id, by: user.id });
+      $('#game-draw').text('Offered');
     });
 
-    $('#draw-accept').on('click', function() {
+    $('#draw-accept').on('click', function () {
       socket.emit('draw-response', { accepted: true });
       $('#draw-offered').css('display', 'none');
     });
 
-    $('#draw-reject').on('click', function() {
+    $('#draw-reject').on('click', function () {
       socket.emit('draw-response', { accepted: false });
       $('#draw-offered').css('display', 'none');
     });
@@ -139,7 +145,7 @@
     function toTitleCase(str) {
       return str.replace(
         /\w\S*/g,
-        function(txt) {
+        function (txt) {
           return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
         }
       );
@@ -156,7 +162,7 @@
       // checkmate?
       if (game.in_checkmate()) {
         status = 'Game over, ' + moveColor + ' is in checkmate.'
-        $('#button-container').hide();
+        $('#button-container').css('visibility', 'hidden');
       }
 
       // draw?
@@ -248,7 +254,7 @@
       if (spectator) {
         $('#peer-role').text('You are a spectator');
         $("#game-resign").hide();
-        $('#button-container').hide();
+        $('#button-container').css('visibility', 'hidden');
       } else {
         $("#game-resign").show();
       }
