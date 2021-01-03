@@ -47,7 +47,6 @@
 
     socket.on('reset', function (msg) {
       if (msg.gameId == serverGame.id) {
-
         startGame(msg.game);
         setTurnIndicator();
       }
@@ -104,6 +103,38 @@
     $('#game-resign').on('click', function () {
       socket.emit('reset', { gameId: serverGame.id });
     });
+
+
+    var updateStatus = function () {
+      var status = ''
+
+      var moveColor = 'White'
+      if (game.turn() === 'b') {
+        moveColor = 'Black'
+      }
+
+      // checkmate?
+      if (game.in_checkmate()) {
+        status = 'Game over, ' + moveColor + ' is in checkmate.'
+      }
+
+      // draw?
+      else if (game.in_draw()) {
+        status = 'Game over, drawn position'
+      }
+
+      // game still on
+      else {
+        status = moveColor + ' to move'
+
+        // check?
+        if (game.in_check()) {
+          status += ', ' + moveColor + ' is in check'
+        }
+      }
+
+      console.log(status);
+    }
 
     var setTurnIndicator = function () {
       const whitesTurn = game.turn() === 'w';
@@ -239,7 +270,7 @@
 
       var cfg = {
         draggable: true,
-        showNotation: false,
+        showNotation: true,
         orientation: playerColor,
         pieceTheme: wikipedia_piece_theme,
         boardTheme: wikipedia_board_theme,
@@ -276,6 +307,8 @@
         to: target,
         promotion: 'q' // NOTE: always promote to a queen for example simplicity
       });
+
+      updateStatus();
 
       // illegal move
       if (move === null) {
@@ -327,4 +360,3 @@
     };
   });
 })();
-
