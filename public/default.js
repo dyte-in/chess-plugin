@@ -4,7 +4,7 @@
   WinJS.UI.processAll().then(function () {
     var socket, serverGame;
     var user, playerColor;
-    var game, board;
+    var game, board, cfg;
     var whitePlayer, blackPlayer;
     var spectator = false;
     var usersOnline = [];
@@ -47,6 +47,7 @@
 
     socket.on('reset', function (msg) {
       $('#current-status').text(`${toTitleCase(msg.by)} resigned.`);
+      endGame();
     });
 
     socket.on('gameStart', function (msg) {
@@ -79,6 +80,7 @@
       if (msg.accepted) {
         $('#current-status').text('Draw offer accepted, game drawn.');
         $('#button-container').css('visibility', 'hidden');
+        endGame();
       } else {
         const currentText = $('#current-status').text();
         const appendText = ', draw offer rejected.';
@@ -160,6 +162,7 @@
       if (game.in_checkmate()) {
         status = 'Game over, ' + moveColor + ' is in checkmate.'
         $('#button-container').css('visibility', 'hidden');
+        endGame();
       }
 
       // draw?
@@ -315,7 +318,7 @@
     var initGame = function (serverGameState) {
       serverGame = serverGameState;
 
-      var cfg = {
+      cfg = {
         draggable: true,
         showNotation: true,
         orientation: playerColor,
@@ -406,4 +409,12 @@
       board.position(game.fen());
     };
   });
+
+  var endGame = function () {
+    board = new ChessBoard('game-board', {
+      ...cfg,
+      draggable: false,
+      position: game.fen(),
+    });
+  }
 })();
