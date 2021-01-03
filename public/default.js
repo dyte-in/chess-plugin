@@ -47,7 +47,6 @@
 
     socket.on('reset', function (msg) {
       $('#current-status').text(`${toTitleCase(msg.by)} resigned.`);
-      $('#button-container').css('visibility', 'hidden');
       endGame();
     });
 
@@ -80,7 +79,6 @@
     socket.on('draw-response', function (msg) {
       if (msg.accepted) {
         $('#current-status').text('Draw offer accepted, game drawn.');
-        $('#button-container').css('visibility', 'hidden');
         endGame();
       } else {
         const currentText = $('#current-status').text();
@@ -124,14 +122,14 @@
 
     $('#game-resign').on('click', function () {
       socket.emit('reset', { gameId: serverGame.id, by: user.id });
-      $('#button-container').css('visibility', 'hidden');
       endGame();
     });
 
     $('#game-draw').on('click', function () {
-      if ($('#game-draw').text() === 'Offered') return;
+      const offeredText = 'Draw Offered';
+      if ($('#game-draw').text() === offeredText) return;
       socket.emit('draw-offered', { gameId: serverGame.id, by: user.id });
-      $('#game-draw').text('Offered').css('opacity', '0.7').css('cursor', 'default');
+      $('#game-draw').text(offeredText).css('opacity', '0.7').css('cursor', 'default');
     });
 
     $('#draw-accept').on('click', function () {
@@ -142,6 +140,10 @@
     $('#draw-reject').on('click', function () {
       socket.emit('draw-response', { accepted: false });
       $('#draw-offered').css('display', 'none');
+    });
+
+    $('#new-game').on('click', function() {
+      window.location.reload();
     });
 
     function toTitleCase(str) {
@@ -164,7 +166,6 @@
       // checkmate?
       if (game.in_checkmate()) {
         status = 'Game over, ' + moveColor + ' is in checkmate.'
-        $('#button-container').css('visibility', 'hidden');
         endGame();
       }
 
@@ -257,9 +258,10 @@
       if (spectator) {
         $('#peer-role').text('You are a spectator');
         $("#game-resign").hide();
-        $('#button-container').css('visibility', 'hidden');
       } else {
+        $('#new-game').hide();
         $("#game-resign").show();
+        $('#game-draw').show();
       }
 
       initGame(game);
@@ -293,7 +295,7 @@
     };
 
     var updateUserList = function () {
-      document.getElementById('userList').innerHTML = '';
+      $('#userList').text('');
       usersOnline.forEach(function (user) {
         $('#userList').append($('<button class="user-invite-btn">')
           .text(user.displayName)
@@ -342,7 +344,6 @@
     }
 
     var endGame = function () {
-      console.log('Ran');
       board = new ChessBoard('game-board', {
         ...cfg,
         draggable: false,
@@ -350,6 +351,10 @@
         onMouseoverSquare: null,
         onMouseoutSquare: null,
       });
+
+      $('#game-draw').hide();
+      $('#game-resign').hide();
+      $('#new-game').show();
     }
 
     // do not pick up pieces if the game is over

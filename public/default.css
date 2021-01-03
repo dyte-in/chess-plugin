@@ -92,8 +92,8 @@ body {
 	cursor: pointer;
 }
 
-#game-resign, #game-draw, #draw-accept, #draw-reject {
-	width: 7.5vw;
+#game-resign, #game-draw, #draw-accept, #draw-reject, #new-game {
+	flex-grow: 1;
 	cursor: pointer;
 	color: #E0E0E0;
 	background: rgb(38, 38, 38);
@@ -101,6 +101,14 @@ body {
 	font-size: 1.2rem;
 	border-radius: 0.5rem;
 	text-align: center;
+}
+
+#game-draw, #draw-accept {
+	margin-right: 0.2rem;
+}
+
+#game-resign, #draw-reject {
+	margin-left: 0.2rem;
 }
 
 #game-board {
@@ -261,4 +269,10 @@ body {
 
 #draw-offered-text {
 	padding: 0.7rem;
+}
+
+#new-game {
+	display: none;
+	width: none;
+	flex-grow: 1;
 }
