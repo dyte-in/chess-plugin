@@ -46,10 +46,7 @@
     });
 
     socket.on('reset', function (msg) {
-      if (msg.gameId == serverGame.id) {
-        startGame(msg.game);
-        setTurnIndicator();
-      }
+      $('#current-status').text(`${toTitleCase(msg.by)} resigned.`);
     });
 
     socket.on('gameStart', function (msg) {
@@ -123,7 +120,7 @@
     });
 
     $('#game-resign').on('click', function () {
-      socket.emit('reset', { gameId: serverGame.id });
+      socket.emit('reset', { gameId: serverGame.id, by: user.id });
     });
 
     $('#game-draw').on('click', function () {

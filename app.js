@@ -57,12 +57,11 @@ io.on('connection', function (socket) {
     socket.on('move', function (msg) {
         io.to(`room/${socket.roomId}`).emit('move', msg);
         activeGames[msg.gameId].board = msg.board;
-        //console.log(msg);
     });
 
     socket.on('reset', function (msg) {
-        activeGames[msg.gameId].board = null;
-        io.to(`room/${socket.roomId}`).emit('gameStart', { game: activeGames[msg.gameId] });
+        const by = activeGames[msg.gameId].users.white === msg.by ? 'white' : 'black';
+        io.to(`room/${socket.roomId}`).emit('reset', { by });
     });
 
     socket.on('draw-offered', function (msg) {
@@ -76,8 +75,6 @@ io.on('connection', function (socket) {
 
 
     socket.on('disconnect', function (msg) {
-
-
         if (socket && socket.userId && socket.gameId) {
             console.log(socket.userId + ' disconnected');
             console.log(socket.gameId + ' disconnected');
