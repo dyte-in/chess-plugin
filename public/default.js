@@ -248,6 +248,7 @@
       if (spectator) {
         $('#peer-role').text('You are a spectator');
         $("#game-resign").hide();
+        $('#button-container').hide();
       } else {
         $("#game-resign").show();
       }
