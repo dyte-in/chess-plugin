@@ -341,6 +341,17 @@
       renderMoveHistory(game.history());
     }
 
+    var endGame = function () {
+      console.log('Ran');
+      board = new ChessBoard('game-board', {
+        ...cfg,
+        draggable: false,
+        position: game.fen(),
+        onMouseoverSquare: null,
+        onMouseoutSquare: null,
+      });
+    }
+
     // do not pick up pieces if the game is over
     // only pick up pieces for the side to move
     var onDragStart = function (source, piece, position, orientation) {
@@ -412,12 +423,4 @@
       board.position(game.fen());
     };
   });
-
-  var endGame = function () {
-    board = new ChessBoard('game-board', {
-      ...cfg,
-      draggable: false,
-      position: game.fen(),
-    });
-  }
 })();
