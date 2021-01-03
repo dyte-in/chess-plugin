@@ -25,7 +25,7 @@
 
     //////////////////////////////
     // Socket.io handlers
-    ////////////////////////////// 
+    //////////////////////////////
 
     socket.on('login', function (msg) {
       console.log(msg);
@@ -72,6 +72,22 @@
       updateStatus();
     });
 
+    socket.on('draw-offered', function(msg) {
+      if (msg.by === playerColor) return;
+      $('#draw-offered').css('display', 'block');
+      $('#draw-offered-text').text(`${toTitleCase(msg.by)} offered a draw!`);
+    });
+
+    socket.on('draw-response', function (msg) {
+      if (msg.accepted) {
+        $('#current-status').text('Draw offer accepted, game drawn.');
+        $('#button-container').hide();
+      } else {
+        const currentText = $('#current-status').text();
+        $('#current-status').text(currentText + ', draw offered rejected.');
+      }
+    });
+
 
     socket.on('logout', function (msg) {
       removeUser(msg.username);
@@ -106,6 +122,28 @@
       socket.emit('reset', { gameId: serverGame.id });
     });
 
+    $('#game-draw').on('click', function() {
+      socket.emit('draw-offered', { gameId: serverGame.id, by: user.id });
+    });
+
+    $('#draw-accept').on('click', function() {
+      socket.emit('draw-response', { accepted: true });
+      $('#draw-offered').css('display', 'none');
+    });
+
+    $('#draw-reject').on('click', function() {
+      socket.emit('draw-response', { accepted: false });
+      $('#draw-offered').css('display', 'none');
+    });
+
+    function toTitleCase(str) {
+      return str.replace(
+        /\w\S*/g,
+        function(txt) {
+          return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+        }
+      );
+    }
 
     var updateStatus = function () {
       var status = ''
@@ -118,6 +156,7 @@
       // checkmate?
       if (game.in_checkmate()) {
         status = 'Game over, ' + moveColor + ' is in checkmate.'
+        $('#button-container').hide();
       }
 
       // draw?

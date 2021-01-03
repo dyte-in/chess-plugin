@@ -1,10 +1,16 @@
-body {
+html, body {
 	overflow-y: auto;
 	
 	display: flex;
 	flex-flow: column;
 	align-content: center;
 	align-items: center;
+}
+
+@media (max-width: 1080px) {
+	html {
+		font-size: 12px !important;
+	}
 }
 
 .page {
@@ -86,7 +92,7 @@ body {
 	cursor: pointer;
 }
 
-#game-resign, #game-draw {
+#game-resign, #game-draw, #draw-accept, #draw-reject {
 	width: 7.5vw;
 	cursor: pointer;
 	color: #E0E0E0;
@@ -198,10 +204,13 @@ body {
 	border-radius: 8px;
 	display: flex;
 	padding: 0.2rem;
-	align-self: center;
 
 	flex-direction: column;
 	justify-content: space-between;
+}
+
+.status-box-container {
+	align-self: center;
 }
 
 #game-status {
@@ -216,7 +225,7 @@ body {
 	margin-bottom: 0.4rem;
 }
 
-#button-container {
+#button-container, #draw-button-container {
 	display: flex;
 	justify-content: space-between;
 	padding: 0.7rem;
@@ -226,6 +235,7 @@ body {
 	height: 70%;
 	padding: 0.7rem;
 	font-size: 1.2rem;
+	overflow-y: auto;
 }
 
 
@@ -236,4 +246,19 @@ body {
 
 .spacer {
 	width: 5vw;
+}
+
+#draw-offered {
+	background-color: #0B0B0B;
+	display: none;
+	position: absolute;
+	font-size: 1.2rem;
+	width: 20vw;
+	padding: 0.2rem;
+	border-radius: 8px;
+	margin-top: 1rem;
+}
+
+#draw-offered-text {
+	padding: 0.7rem;
 }

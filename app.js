@@ -65,6 +65,15 @@ io.on('connection', function (socket) {
         io.to(`room/${socket.roomId}`).emit('gameStart', { game: activeGames[msg.gameId] });
     });
 
+    socket.on('draw-offered', function (msg) {
+        const by = activeGames[msg.gameId].users.white === msg.by ? 'white' : 'black';
+        io.to(`room/${socket.roomId}`).emit('draw-offered', { by });
+    });
+
+    socket.on('draw-response', function (msg) {
+        io.to(`room/${socket.roomId}`).emit('draw-response', msg);
+    });
+
 
     socket.on('disconnect', function (msg) {
 
