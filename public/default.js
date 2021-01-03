@@ -129,7 +129,7 @@
     $('#game-draw').on('click', function () {
       if ($('#game-draw').text() === 'Offered') return;
       socket.emit('draw-offered', { gameId: serverGame.id, by: user.id });
-      $('#game-draw').text('Offered');
+      $('#game-draw').text('Offered').css('opacity', '0.7').css('cursor', 'default');
     });
 
     $('#draw-accept').on('click', function () {
