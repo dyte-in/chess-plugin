@@ -47,6 +47,7 @@
 
     socket.on('reset', function (msg) {
       $('#current-status').text(`${toTitleCase(msg.by)} resigned.`);
+      $('#button-container').css('visibility', 'hidden');
       endGame();
     });
 
@@ -123,6 +124,8 @@
 
     $('#game-resign').on('click', function () {
       socket.emit('reset', { gameId: serverGame.id, by: user.id });
+      $('#button-container').css('visibility', 'hidden');
+      endGame();
     });
 
     $('#game-draw').on('click', function () {
