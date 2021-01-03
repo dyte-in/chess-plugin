@@ -22,33 +22,46 @@
     </div>
   </div>
   <div class="page game" id="page-game">
-    <div id="game-container">
-      <div class="flex-start text-right w-50 mr-2" style="
+    <div id="big-container">
+      <div id="game-container">
+        <div class="flex-start text-right w-50 mr-2" style="
     display: flex;
     align-items: center;
     margin-bottom: 1rem;
 ">
-        <canvas class="letterpic" id="opponent-avatar" title="" width="30" height="30"></canvas>
-        <h4 id="opponent-name"></h4>
-      </div>
-      <div id="game-board"></div>
-      <div class="flex-end text-left w-50 ml-2" style="
+          <canvas class="letterpic" id="opponent-avatar" title="" width="30" height="30"></canvas>
+          <h4 id="opponent-name"></h4>
+        </div>
+        <div id="game-board"></div>
+        <div class="flex-end text-left w-50 ml-2" style="
     display: flex;
     align-items: center;
     margin-top: 1rem;
 ">
-        <canvas class="letterpic" id="player-avatar" title="" width="30" height="30"></canvas>
-        <h4 id="player-name"></h4>
+          <canvas class="letterpic" id="player-avatar" title="" width="30" height="30"></canvas>
+          <h4 id="player-name"></h4>
+        </div>
+      </div>
+      <div class="spacer"></div>
+      <div class="status-box">
+        <div id="game-status">
+          <div class="status-text">STATUS</div>
+          <div id="current-status"></div>
+        </div>
+        <div id="game-pgn-container">
+          <div class="status-text">MOVES</div>
+          <div id="game-pgn"></div>
+        </div>
+        <div id="button-container">
+          <div id="game-draw">Offer Draw</div>
+          <div id="game-resign">Resign</div>
+        </div>
       </div>
     </div>
-    <div>
-    </div>
-    <h2 id="game-message"></h2>
     <div class="user-label">
       <div id="peer-identity"></div>
       <div id="peer-role"></div>
     </div>
-    <button id="game-resign">Resign</button>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/socket.io-client@3/dist/socket.io.js"></script>

@@ -68,6 +68,8 @@
         setTurnIndicator();
         renderMoveHistory(game.history());
       }
+
+      updateStatus();
     });
 
 
@@ -133,7 +135,8 @@
         }
       }
 
-      console.log(status);
+      $('#current-status').text(status);
+      $('#game-pgn').text(game.pgn());
     }
 
     var setTurnIndicator = function () {
@@ -211,6 +214,7 @@
       }
 
       initGame(game);
+      updateStatus();
 
       $('#page-lobby').hide();
       $('#page-login').hide();
