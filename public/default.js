@@ -9,8 +9,8 @@
     var spectator = false;
     var usersOnline = [];
     var myGames = [];
-    var boardWhite = '#f0d9b5';
-    var boardBlack = '#b58863';
+    var boardWhite = 'rgb(255, 206, 158)';
+    var boardBlack = 'rgb(209, 139, 71)';
     socket = io();
 
     const plugin = new dytePluginSdk.DytePlugin();
@@ -67,6 +67,7 @@
         }
         board.position(game.fen());
         setTurnIndicator();
+        renderMoveHistory(game.history());
       }
     });
 
@@ -167,7 +168,8 @@
       }
 
       $(".letterpic").letterpic({
-        fill: "color"
+        fill: "color",
+        colors: ['rgb(33 96 253)']
       });
 
       if (spectator) {
@@ -218,6 +220,16 @@
       });
     };
 
+    var renderMoveHistory = function (moves) {
+      // var historyElement = $('#move-history').empty();
+      // historyElement.empty();
+      // for (var i = 0; i < moves.length; i = i + 2) {
+      //     historyElement.append('<span>' + moves[i] + ' ' + ( moves[i + 1] ? moves[i + 1] : ' ') + '</span><br>')
+      // }
+      // historyElement.scrollTop(historyElement[0].scrollHeight);
+  
+  };
+
     //////////////////////////////
     // Chess Game
     ////////////////////////////// 
@@ -229,15 +241,20 @@
         draggable: true,
         showNotation: false,
         orientation: playerColor,
+        pieceTheme: wikipedia_piece_theme,
+        boardTheme: wikipedia_board_theme,
         position: serverGame.board ? serverGame.board : 'start',
         onDragStart: onDragStart,
         onDrop: onDrop,
-        onSnapEnd: onSnapEnd
+        onSnapEnd: onSnapEnd,
+        onMouseoutSquare: onMouseoutSquare,
+        onMouseoverSquare: onMouseoverSquare,
       };
 
       game = serverGame.board ? new Chess(serverGame.board) : new Chess();
       board = new ChessBoard('game-board', cfg);
       $(window).resize(board.resize);
+      renderMoveHistory(game.history());
     }
 
     // do not pick up pieces if the game is over
@@ -265,8 +282,43 @@
         return 'snapback';
       } else {
         socket.emit('move', { move: move, gameId: serverGame.id, board: game.fen() });
+        renderMoveHistory(game.history());
       }
     };
+
+    var onMouseoverSquare = function(square, piece) {
+      var moves = game.moves({
+          square: square,
+          verbose: true
+      });
+  
+      if (moves.length === 0) return;
+  
+      greySquare(square);
+  
+      for (var i = 0; i < moves.length; i++) {
+          greySquare(moves[i].to);
+      }
+  };
+  
+  var onMouseoutSquare = function(square, piece) {
+      removeGreySquares();
+  };
+  
+  var removeGreySquares = function() {
+      board.resize();
+  };
+  
+  var greySquare = function(square) {
+      var squareEl = $('#game-board .square-' + square);
+  
+      var background = '#a9a9a9';
+      if (squareEl.hasClass('black-3c85d') === true) {
+          background = '#696969';
+      }
+  
+      squareEl.css('background', background);
+  };
 
     // update the board position after the piece snap 
     // for castling, en passant, pawn promotion

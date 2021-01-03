@@ -4,7 +4,7 @@
 <head>
   <meta name="viewport" content="width=410; user-scalable=no; minimal-ui">
   <title>Dyte Chess</title>
-  <link rel="stylesheet" href="lib/chessboard-0.3.0.min.css">
+  <link rel="stylesheet" href="lib/chessboard.css">
   <link rel="stylesheet" href="lib/WinJS.4.0/css/ui-light.css" />
   <link rel="stylesheet" href="/default.css" />
 </head>
@@ -23,25 +23,32 @@
   </div>
   <div class="page game" id="page-game">
     <div id="game-container">
-      <div class="flex-start text-right w-50 mr-2">
-        <div class="letterpic" id="opponent-avatar" title="Jon Snow"></div>
-        <h4 id="opponent-name">Opponent</h4>
+      <div class="flex-start text-right w-50 mr-2" style="
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+">
+        <canvas class="letterpic" id="opponent-avatar" title="Kushagra V (also noob)" width="30" height="30"></canvas>
+        <h4 id="opponent-name">Kushagra V (also noob)</h4>
       </div>
       <div id="game-board"></div>
-      <div class="flex-end text-left w-50 ml-2">
-        <div class="letterpic" id="player-avatar" title="Jon Snow"></div>
-        <h4 id="player-name">You</h4>
+      <div class="flex-end text-left w-50 ml-2" style="
+    display: flex;
+    align-items: center;
+    margin-top: 1rem;
+">
+        <canvas class="letterpic" id="player-avatar" title="Kushagra V (also noob)" width="30" height="30"></canvas>
+        <h4 id="player-name">Kushagra V (also noob)</h4>
       </div>
     </div>
+    <div>
+    </div>
     <h2 id="game-message"></h2>
-    <div class="game-bottom">
       <div class="user-label">
         <div id="peer-identity"></div>
         <div id="peer-role"></div>
       </div>
-      <div id="game-turn"></div>
-      <div id="game-resign-container"><button id="game-resign">Reset</button></div>
-    </div>
+      <button id="game-resign">Resign</button>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/socket.io-client@3/dist/socket.io.js"></script>
@@ -49,7 +56,8 @@
   <script src="lib/jquery.letterpic.min.js"></script>
   <script src="lib/WinJS.4.0/js/WinJS.min.js"></script>
   <script src="lib/chess.min.js"></script>
-  <script src="lib/chessboard-0.3.0.min.js"></script>
+  <script src="lib/chessboard.js"></script>
+  <script src="lib/chessboardjs-themes.js"></script>
   <script src="lib/dyte-plugin-sdk.umd.js"></script>
   <script src="/default.js"></script>
 </body>
