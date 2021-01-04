@@ -142,7 +142,7 @@
       $('#draw-offered').css('display', 'none');
     });
 
-    $('#new-game').on('click', function() {
+    $('#new-game').on('click', function () {
       window.location.reload();
     });
 
@@ -185,7 +185,15 @@
       }
 
       $('#current-status').text(status);
-      $('#game-pgn').text(game.pgn());
+
+      const displayPgn = game.pgn().split(/\d\. /)
+        .slice(1)
+        .map((text, i) => `${i + 1}. ${text}`)
+        .join('<br />');
+
+      console.log(game.pgn());
+      $('#game-pgn').html(displayPgn);
+      $('#game-pgn').scrollTop($('#game-pgn')[0].scrollHeight);
     }
 
     var setTurnIndicator = function () {

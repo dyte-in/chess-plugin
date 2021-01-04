@@ -7,9 +7,15 @@ html, body {
 	align-items: center;
 }
 
-@media (max-width: 1080px) {
+@media (max-width: 1220px) {
 	html {
 		font-size: 12px !important;
+	}
+}
+
+@media (max-width: 780px) {
+	html {
+		font-size: 10px !important;
 	}
 }
 
@@ -240,10 +246,15 @@ body {
 }
 
 #game-pgn-container {
-	height: 70%;
+	height: 65%;
 	padding: 0.7rem;
 	font-size: 1.2rem;
+}
+
+#game-pgn {
 	overflow-y: auto;
+	max-height: 90%;
+	height: 90%;
 }
 
 
