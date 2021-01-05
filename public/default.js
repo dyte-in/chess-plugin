@@ -87,6 +87,7 @@
           $('#current-status').text(currentText + appendText);
         }
         $('#game-draw').text('Offer Draw');
+        $('#game-draw').css('opacity', '1').css('cursor', 'pointer');
       }
     });
 
