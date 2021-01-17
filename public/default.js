@@ -20,9 +20,9 @@
             }).catch((err) => console.log(err));
         });
 
-        /// ///////////////////////////
+        ///////////////////////////////
         // Socket.io handlers
-        /// ///////////////////////////
+        ///////////////////////////////
 
         socket.on('login', (msg) => {
             console.log(msg);
@@ -32,8 +32,6 @@
                 startGame(msg.game);
                 setTurnIndicator();
             } else {
-                // socket.emit('login', peer.id);
-
                 $('#page-login').hide();
                 $('#page-lobby').show();
                 usersOnline = plugin.getJoinedPeers().filter((p) => p.id !== user.id);
@@ -60,7 +58,6 @@
                 }
                 board.position(game.fen());
                 setTurnIndicator();
-                renderMoveHistory(game.history());
             }
 
             updateStatus();
@@ -91,9 +88,9 @@
             removeUser(msg.username);
         });
 
-        /// ///////////////////////////
+        ///////////////////////////////
         // Menus
-        /// ///////////////////////////
+        ///////////////////////////////
 
         $('#login').on('click', () => {
             username = $('#username').val();
@@ -292,19 +289,9 @@
             });
         };
 
-        var renderMoveHistory = function (moves) {
-            // var historyElement = $('#move-history').empty();
-            // historyElement.empty();
-            // for (var i = 0; i < moves.length; i = i + 2) {
-            //     historyElement.append('<span>' + moves[i] + ' ' + ( moves[i + 1] ? moves[i + 1] : ' ') + '</span><br>')
-            // }
-            // historyElement.scrollTop(historyElement[0].scrollHeight);
-
-        };
-
-        /// ///////////////////////////
+        ///////////////////////////////
         // Chess Game
-        /// ///////////////////////////
+        ///////////////////////////////
 
         var initGame = function (serverGameState) {
             serverGame = serverGameState;
@@ -326,7 +313,6 @@
             game = serverGame.board ? new Chess(serverGame.board) : new Chess();
             board = new ChessBoard('game-board', cfg);
             $(window).resize(board.resize);
-            renderMoveHistory(game.history());
         };
 
         var endGame = function () {
@@ -370,7 +356,6 @@
                 return 'snapback';
             }
             socket.emit('move', { move, gameId: serverGame.id, board: game.fen() });
-            renderMoveHistory(game.history());
         };
 
         var onMouseoverSquare = function (square, piece) {
