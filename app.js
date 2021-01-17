@@ -1,49 +1,53 @@
-var express = require('express');
-var app = express();
+const express = require('express');
+
+const app = express();
+
 app.use(express.static('public'));
 app.use(express.static('dashboard'));
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
-var port = process.env.PORT || 5000;
 
-var activeGames = {};
+const http = require('http').Server(app);
 
-app.get('/main', function (req, res) {
-    res.sendFile(__dirname + '/public/index.html');
+const io = require('socket.io')(http);
+
+const port = process.env.PORT || 5000;
+
+const activeGames = {};
+
+app.get('/main', (_, res) => {
+    res.sendFile(`${__dirname}/public/index.html`);
 });
 
+function doLogin(s, userId, roomId) {
+    console.log({ userId, roomId });
 
-io.on('connection', function (socket) {
-    console.log('new connection ' + socket);
+    const sock = s;
+    sock.userId = userId;
+    sock.roomId = roomId;
 
-    socket.on('login', function ({ roomId, userId }) {
+    console.log(`activeGames: ${JSON.stringify(activeGames)}`);
+
+    if (activeGames[roomId]) {
+        sock.emit('login', { game: activeGames[roomId] });
+    } else {
+        sock.emit('login', { game: null });
+    }
+}
+
+io.on('connection', (socketIo) => {
+    const socket = socketIo;
+
+    console.log(`new connection ${socket}`);
+
+    socket.on('login', ({ roomId, userId }) => {
         socket.join(`room/${roomId}`);
         doLogin(socket, userId, roomId);
     });
 
-    function doLogin(socket, userId, roomId) {
-        console.log({ userId, roomId });
-        socket.userId = userId;
-        socket.roomId = roomId;
-        console.log("activeGames: " + JSON.stringify(activeGames));
-        if (activeGames[roomId]) {
-            socket.emit('login', { game: activeGames[roomId] });
-        } else {
-            socket.emit('login', { game: null });
-        }
-    }
-
-    socket.on('invite', function (opponent) {
-        console.log(opponent);
-
-        // socket.broadcast.emit('leavelobby', socket.userId);
-        // socket.broadcast.emit('leavelobby', opponentId);
-
-
-        var game = {
+    socket.on('invite', (opponent) => {
+        const game = {
             id: socket.roomId,
             board: null,
-            users: { white: socket.userId, black: opponent.id }
+            users: { white: socket.userId, black: opponent.id },
         };
 
         socket.gameId = game.id;
@@ -53,52 +57,45 @@ io.on('connection', function (socket) {
         io.to(`room/${socket.roomId}`).emit('gameStart', { game });
     });
 
-
-    socket.on('move', function (msg) {
+    socket.on('move', (msg) => {
         io.to(`room/${socket.roomId}`).emit('move', msg);
         activeGames[msg.gameId].board = msg.board;
     });
 
-    socket.on('reset', function (msg) {
+    socket.on('reset', (msg) => {
         const by = activeGames[msg.gameId].users.white === msg.by ? 'white' : 'black';
         io.to(`room/${socket.roomId}`).emit('reset', { by });
     });
 
-    socket.on('draw-offered', function (msg) {
+    socket.on('draw-offered', (msg) => {
         const by = activeGames[msg.gameId].users.white === msg.by ? 'white' : 'black';
         io.to(`room/${socket.roomId}`).emit('draw-offered', { by });
     });
 
-    socket.on('draw-response', function (msg) {
+    socket.on('draw-response', (msg) => {
         io.to(`room/${socket.roomId}`).emit('draw-response', msg);
     });
 
-
-    socket.on('disconnect', function (msg) {
+    socket.on('disconnect', () => {
         if (socket && socket.userId && socket.gameId) {
-            console.log(socket.userId + ' disconnected');
-            console.log(socket.gameId + ' disconnected');
+            console.log(`${socket.userId} disconnected`);
+            console.log(`${socket.gameId} disconnected`);
         }
 
         delete activeGames[socket.gameId];
 
         io.to(`room/${socket.roomId}`).emit('logout', {
             userId: socket.userId,
-            gameId: socket.gameId
+            gameId: socket.gameId,
         });
     });
 
-    /////////////////////
-    // Dashboard messages 
-    /////////////////////
-
-    socket.on('dashboardlogin', function () {
+    socket.on('dashboardlogin', () => {
         console.log('dashboard joined');
         socket.emit('dashboardlogin', { games: activeGames });
     });
-
 });
 
-http.listen(port, function () {
-    console.log('listening on *:' + port);
+http.listen(port, () => {
+    console.log(`Listening on port ${port}`);
 });
