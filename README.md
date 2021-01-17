@@ -1,7 +1,23 @@
-# Chess Plugin by dyte
+<p align="center">
+  <a href="https://github.com/dyte-in/chess-plugin">
+    <img src="https://dyte.in/images/dyte_logo_new.svg" alt="Logo" width="80">
+  </a>
 
-This plugin lets you play chess directly on dyte.
+  <h3 align="center">Chess Plugin by dyte</h3>
 
+  <p align="center">
+    A dyte plugin which lets you play live Chess with friends on a videocall.
+    <br />
+    <a href="https://github.com/dyte-in/chess-plugin"><strong>Explore the docs »</strong></a>
+    <br />
+    <br />
+    <a href="https://github.com/dyte-in/chess-plugin">View Demo</a>
+    ·
+    <a href="https://github.com/dyte-in/chess-plugin/issues">Report Bug</a>
+    ·
+    <a href="https://github.com/dyte-in/chess-plugin/issues">Request Feature</a>
+  </p>
+</p>
 
 ## About The Project
 
