@@ -11,6 +11,7 @@ Inspired by Queen's Gambit? Practice chess moves with your buddies right here ri
 
 - dyte-plugin-sdk
 - WinJS 4.0
+- [JQuery](https://jquery.com/)
 - [chessboard.js](https://chessboardjs.com/)
 - [socket.io](https://socket.io/)
 - [express](https://www.npmjs.com/package/express)
