@@ -1,7 +1,7 @@
 {
   "name": "chess-plugin",
   "version": "0.0.1",
-  "description": "Real-time chess game ",
+  "description": "Chess plugin by dyte.",
   "main": "app.js",
   "engines": {
     "node": ">=6.9.1"
@@ -12,16 +12,21 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/dwcares/socketserver"
+    "url": "https://github.com/dyte-in/chess-plugin"
   },
   "author": "dwcares",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/dwcares/socketserver/issues"
+    "url": "https://github.com/dyte-in/chess-plugin/issues"
   },
-  "homepage": "https://github.com/dwcares/socketserver",
+  "homepage": "https://github.com/dyte-in/chess-plugin",
   "dependencies": {
     "express": "^4.10.2",
     "socket.io": "^3.0.4"
+  },
+  "devDependencies": {
+    "eslint": "^7.18.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1"
   }
 }
