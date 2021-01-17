@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://dyte.in" style="display: inline-block; background-color: black; padding: 10px;">
+  <a href="https://dyte.in">
     <img src="https://dyte.in/images/dyte_logo_new.svg" alt="Logo" width="80">
   </a>
 
@@ -11,7 +11,7 @@
     <a href="https://github.com/dyte-in/chess-plugin"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/dyte-in/chess-plugin">View Demo</a>
+    <a href="https://app.dyte.in">View Demo</a>
     ·
     <a href="https://github.com/dyte-in/chess-plugin/issues">Report Bug</a>
     ·
