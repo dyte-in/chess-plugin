@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://dyte.in">
-    <img src="https://dyte.in/images/dyte_logo_new.svg" alt="Logo" width="80">
+    <img src="https://dyte-uploads.s3.ap-south-1.amazonaws.com/dyte-logo.png" alt="Logo" width="80">
   </a>
 
   <h3 align="center">Chess Plugin by dyte</h3>
