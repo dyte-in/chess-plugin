@@ -1,12 +1,12 @@
 const express = require('express');
+const path = require('path');
 
 const app = express();
 
-app.use(express.static('public'));
-app.use(express.static('dashboard'));
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'dashboard')));
 
 const http = require('http').Server(app);
-
 const io = require('socket.io')(http);
 
 const port = process.env.PORT || 5000;
@@ -14,7 +14,7 @@ const port = process.env.PORT || 5000;
 const activeGames = {};
 
 app.get('/main', (_, res) => {
-    res.sendFile(`${__dirname}/public/index.html`);
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 function doLogin(s, userId, roomId) {
@@ -35,9 +35,6 @@ function doLogin(s, userId, roomId) {
 
 io.on('connection', (socketIo) => {
     const socket = socketIo;
-
-    console.log(`new connection ${socket}`);
-
     socket.on('login', ({ roomId, userId }) => {
         socket.join(`room/${roomId}`);
         doLogin(socket, userId, roomId);
