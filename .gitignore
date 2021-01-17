@@ -28,5 +28,6 @@ node_modules
 
 # Visual Studio Code settings
 .vscode
-Code
-typings
+
+# Env vars
+.env
