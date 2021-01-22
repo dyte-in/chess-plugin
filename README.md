@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://dyte.in">
-    <img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/536973cd-65bf-45ee-bdd3-8200ad445bd3/Logo_on_Light_%28no_bg%29.svg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAT73L2G45O3KS52Y5%2F20210117%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20210117T193715Z&X-Amz-Expires=86400&X-Amz-Signature=dfe8438596a8ffae0fe788642b02f6726b11a4e25e8a9a14b248904b51290728&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Logo%2520on%2520Light%2520%28no%2520bg%29.svg%22" alt="Logo" width="80">
+    <img src="https://dyte-uploads.s3.ap-south-1.amazonaws.com/dyte-logo-dark.svg" alt="Logo" width="80">
   </a>
 
   <h3 align="center">Chess Plugin by dyte</h3>
